@@ -37,8 +37,6 @@ class KerasModel(object):
             input_shape = (img_rows, img_cols, 1)
 
         x = x.astype('float32')
-
-        # convert class vectors to binary class matrices
         y = keras.utils.to_categorical(t_y, num_classes)
 
         model = Sequential()
