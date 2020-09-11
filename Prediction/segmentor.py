@@ -1,6 +1,4 @@
-"""
-Separate each contour and save as images
-"""
+
 from glob import glob
 
 import cv2
@@ -31,16 +29,11 @@ def targetNum(blobs_labels):
     nums = list(set(edges))
     for num in nums:
         if (num in edge1) and (num in edge2) and (num in edge3) and (num in edge4):
-            # print(num)
             return num
     return 0
 
 def padding_square(img):
-    """
-    :type img: ndarray
-    :rtype: ndarray
-    """
-    # TODO: add padding to right/bottom side of img and make it a square
+
     img = exposure.adjust_gamma(img, 0.15)
     (vertical_pixel, horizontal_pixel) = img.shape
     if vertical_pixel > horizontal_pixel:
@@ -55,11 +48,6 @@ def padding_square(img):
     return img
 
 def padding_32(img):
-    """
-    :type img: ndarray
-    :rtype: ndarray
-    """
-    # TODO: add padding to 32*32
     padding = ((2, 2), (2, 2))
     img = skimage.util.pad(img, padding, 'constant', constant_values=0)
     return img
@@ -80,7 +68,7 @@ def isBar(img, rect):
 def overlap(bars_rect, i, j):
     r1 = bars_rect[i]
     r2 = bars_rect[j]
-    if (r1[0] + r1[2]) < r2[0] or r1[0] > (r2[0] + r2[2]):  # don't even touch horizontally
+    if (r1[0] + r1[2]) < r2[0] or r1[0] > (r2[0] + r2[2]): 
         return False
     temp_array = [r1[0], r1[0] + r1[2],
                   r2[0], r2[0] + r2[2]]
@@ -95,7 +83,6 @@ def cropImg(im_temp2, new_rect):
     im_temp2 = im_temp2 * 255
     im_temp2 = padding_square(im_temp2)
 
-    # somehow without these code, resize cannot work
     cv2.imwrite("temp.png", im_temp2)
     im_temp2 = cv2.imread('./temp.png', 0)
 
@@ -124,10 +111,10 @@ def img_combine(img1, img2, r1, r2, base_rect):
 
 def process(image_path):
     im_gray = cv2.imread(image_path, 0)
-    # Convert to grayscale and apply Gaussian filtering
+ 
     im_gray = cv2.GaussianBlur(im_gray, (5, 5), 0)
     im = 255 - im_gray
-    # Threshold the image
+  
     ret, im_th = cv2.threshold(im, 127, 255, cv2.THRESH_BINARY_INV)
 
     im2, ctrs, hier = cv2.findContours(im_th.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -136,7 +123,7 @@ def process(image_path):
     bars_im = []
 
     for rect in rects:
-        # create new img file
+        
         im_temp = im2[rect[1]:rect[1] + rect[3], rect[0]:rect[0] + rect[2]]
         blobs_labels = measure.label(im_temp, connectivity=5, neighbors=8, background=0, return_num=False)
         im_temp = (blobs_labels == targetNum(blobs_labels)) * 1
