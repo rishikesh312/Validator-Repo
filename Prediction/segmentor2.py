@@ -1,6 +1,4 @@
-"""
-Separate each contour and save as images
-"""
+
 import cv2
 import numpy as np
 import skimage
@@ -38,7 +36,7 @@ def padding_square(img):
     :type img: ndarray
     :rtype: ndarray
     """
-    # TODO: add padding to right/bottom side of img and make it a square
+ 
     img = exposure.adjust_gamma(img, 0.15)
     (vertical_pixel, horizontal_pixel) = img.shape
     if vertical_pixel > horizontal_pixel:
@@ -94,7 +92,7 @@ def cropImg(im_temp2, new_rect):
     im_temp2 = im_temp2 / 255
     im_temp2 = cv2.resize(im_temp2, (28, 28), interpolation=cv2.INTER_AREA)
     im_temp2 = padding_32(im_temp2)
-    # cv2.imwrite(getName(rect), im_temp2)
+  
     cropped_imgs.append(im_temp2)
     cropped_rects.append([rect[0], rect[1], rect[0] + rect[2], rect[1] + rect[3]])
 
