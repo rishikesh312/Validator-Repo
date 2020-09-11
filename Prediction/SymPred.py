@@ -1,14 +1,6 @@
 class SymPred():
 	def __init__(self,prediction, x1, y1, x2, y2):
-		"""
-		<x1,y1> <x2,y2> is the top-left and bottom-right coordinates for the bounding box
-		(x1,y1)
-			   .--------
-			   |	   	|
-			   |	   	|
-			    --------.
-			    		 (x2,y2)
-		"""
+	
 		self.prediction = prediction
 		self.x1 = x1
 		self.y1 = y1
